@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>YT Downloader Client</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="ion-padding">
+    <form #form="ngForm">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">YT Link</ion-label>
+              <ion-input name="link" ngModel required #link="ngModel"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button (click)="addToList(form)" expand="block" color="light" [disabled]="link.invalid">Add To List
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-button type="submit" expand="block" color="secondary" (click)="downloadList('video')"
+              [disabled]="list.length == 0">
+              Download Video
+            </ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button type="submit" expand="block" color="secondary" (click)="downloadList('audio')"
+              [disabled]="list.length == 0">
+              Download Audio
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+    <ion-item-divider></ion-item-divider>
+    <!-- Links list -->
+    <ng-container>
+      <ion-item lines="none">
+        <ion-label class="section-header">Links List ({{list.length}})</ion-label>
+      </ion-item>
+      <ng-container *ngIf="list.length > 0">
+        <ng-container *ngFor="let item of list; let i = index">
+          <ion-item lines="none">
+            <ion-label>{{item}}</ion-label>
+            <ion-icon class="delete-icon" name="trash-outline" (click)="deletionConfirmationAlert(i)"></ion-icon>
+          </ion-item>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="list.length == 0">
+        <p class="no-data-msg">No link is added yet</p>
+      </ng-container>
+    </ng-container>
+    <ion-item-divider></ion-item-divider>
+    <!-- Downloads list -->
+    <ng-container>
+      <ion-item lines="none">
+        <ion-label class="section-header">Downloads list ({{downloadsList.length}})</ion-label>
+        <ion-button color="secondary" slot="end" (click)="getDoanloadsList()">
+          Refresh
+        </ion-button>
+      </ion-item>
+      <ng-container *ngIf="downloadsList.length > 0">
+        <ng-container *ngFor="let item of downloadsList; let i = index">
+          <ion-item lines="none">
+            <ion-text class="downloads-list-item" (click)="openDownloadLink(item)">{{item}}</ion-text>
+          </ion-item>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="downloadsList.length == 0">
+        <p class="no-data-msg">No downloads yet</p>
+      </ng-container>
+    </ng-container>
+    <ion-item-divider></ion-item-divider>
+  </div>
+
+</ion-content>

@@ -1,6 +1,8 @@
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+// Services
+import { GlobalService } from './global.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,15 +10,20 @@ import { Observable } from 'rxjs';
 export class DownloadService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private globalService: GlobalService
   ) { }
 
   download(links: string[], type: string): Observable<any> {
-    return this.http.post(`http://192.168.1.200:3000/links?type=${type}`, { links });
+    const url = this.globalService.getUrl();
+    if (url != null) return this.http.post(`${url}/links?type=${type}`, { links });
+    else return null;
   }
 
   getDownloadedMediaList() {
-    return this.http.get(`http://192.168.1.200:3000/downloads`);
+    const url = this.globalService.getUrl();
+    if (url != null) return this.http.get(`${url}/downloads`);
+    else return null;
   }
 
 }

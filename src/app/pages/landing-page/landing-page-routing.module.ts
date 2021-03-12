@@ -6,7 +6,8 @@ import { LandingPagePage } from './landing-page.page';
 const routes: Routes = [
   {
     path: '',
-    component: LandingPagePage
+    component:
+      LandingPagePage
   }
 ];
 
@@ -14,4 +15,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class LandingPagePageRoutingModule {}
+export class LandingPagePageRoutingModule { }

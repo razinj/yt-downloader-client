@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { DownloadService } from 'src/app/services/download.service';
 import { NgForm } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
-
 import { Plugins } from '@capacitor/core';
+import { Component } from '@angular/core';
+import { AlertController } from '@ionic/angular';
+// Services
+import { GlobalService } from 'src/app/services/global.service';
+import { DownloadService } from 'src/app/services/download.service';
 
 const { Browser } = Plugins;
 
@@ -18,7 +19,10 @@ export class LandingPagePage {
   downloadsList: string[] = [];
 
   constructor(
+    // public
     public alertController: AlertController,
+    // private
+    private globalService: GlobalService,
     private downloadService: DownloadService
   ) { }
 
@@ -53,8 +57,11 @@ export class LandingPagePage {
 
   // Helper functions
   async openDownloadLink(fileName: string) {
-    console.log(`http://192.168.1.200:3000/public/${fileName}`);
-    await Browser.open({ url: `http://192.168.1.200:3000/public/${fileName}` });
+    const url = this.globalService.getUrl();
+    if (url != null) {
+      console.log(`${url}/public/${fileName}`);
+      await Browser.open({ url: `${url}/public/${fileName}` });
+    }
   }
 
   async deletionConfirmationAlert(index: number) {
@@ -66,6 +73,10 @@ export class LandingPagePage {
       ]
     });
     await alert.present();
+  }
+
+  persistUrl(form: NgForm) {
+    this.globalService.persistUrl(form.value.url);
   }
 
 }
